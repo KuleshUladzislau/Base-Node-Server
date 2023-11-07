@@ -1,19 +1,24 @@
-import {MongoClient} from "mongodb";
-import * as mongoose from "mongoose";
+import {MongoClient, ServerApiVersion} from 'mongodb'
+
+const uri = "mongodb+srv://vercel-admin-user:paradoxkulesh@test.mi4rsi6.mongodb.net/?retryWrites=true&w=majority";
 
 
-const mongoUri = process.env.mongoURI || 'mongodb://127.0.0.1:27017'
+const client = new MongoClient(uri, {
+    serverApi: {
+        version: ServerApiVersion.v1,
+        strict: true,
+        deprecationErrors: true,
+    }
+});
 
-const client = new MongoClient(mongoUri)
-
-
-export async function runDB() {
+export async function run() {
     try {
-        await client.connect()
-        await client.db('productsDB')
-    } catch {
-        await client.close()
+        await client.connect();
+        console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    } finally {
+        await client.close();
     }
 }
 
+run().catch(console.dir);
 

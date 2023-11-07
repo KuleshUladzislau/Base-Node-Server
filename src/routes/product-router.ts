@@ -1,6 +1,6 @@
 import {Router} from "express";
 import {Response,Request} from "express";
-import {productRepository} from "../repositories/example-repository";
+ import {productRepository} from "../repositories/example-repository";
 
 
 export const productRouter = Router({})

@@ -3,7 +3,10 @@ import {v4} from 'uuid'
 
 const products = [{id: 1, title: 'tomato'}, {id: 2, title: 'cucumber'},]
 
-const mongoUri = process.env.mongoURI || 'mongodb://127.0.0.1:27017'
+const mongoUri = "mongodb+srv://vercel-admin-user:paradoxkulesh@test.mi4rsi6.mongodb.net/?retryWrites=true&w=majority";
+
+
+
 
 
 const client = new MongoClient(mongoUri)
