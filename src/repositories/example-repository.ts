@@ -30,7 +30,7 @@ export const productRepository = {
         return res
     },
     async deleteProduct(id:string){
-        let res = await client.db('productsDB').collection('products').deleteOne({id})
+        let res = await client.db('productsDB').collection('products').deleteOne({id:id})
         return res
     }
 }
