@@ -1,11 +1,16 @@
 import {Router} from "express";
 import {Response,Request} from "express";
- import {productRepository} from "../repositories/example-repository";
+ import {productRepository} from "../repositories/products-repository";
+import {authMiddleware} from "../midlewares/authMiddleware";
 
 
 export const productRouter = Router({})
 
-productRouter.get('/',async (req:Request,res:Response)=>{
+
+
+productRouter.get('/',[
+    authMiddleware
+],async (req:Request,res:Response)=>{
     const products = await productRepository.getProducts()
     if(products){
         res.send(products)
