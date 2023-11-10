@@ -50,7 +50,8 @@ authRouter.post('/login', async (req: Request, res: Response) => {
 
 
         if(checkUserInDB.status === 200) {
-
+            res.cookie('refreshToken',checkUserInDB?.token?.refreshToken,{maxAge:30*24*60&60*1000,httpOnly:true})
+            res.cookie('accessToken',checkUserInDB?.token?.accessToken,{maxAge:30000,httpOnly:true})
 
             return res.status(200).json(checkUserInDB)
         }
