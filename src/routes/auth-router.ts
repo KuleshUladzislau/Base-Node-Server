@@ -80,8 +80,9 @@ authRouter.get('/refresh', async (req: Request, res: Response) => {
     try{
         const {refreshToken} = req.cookies
         const userData = await authRepository.refreshToken(refreshToken)
-        res.cookie('refreshToken',userData?.tokens?.refreshToken,{maxAge:30*24*60*60*1000,httpOnly:true})
-        return res.json(userData)
+        res.cookie('refreshToken',userData?.tokens?.refreshToken,{maxAge:30*24*60*60*1000,httpOnly:true,secure:true,sameSite:'none'})
+        res.cookie('accessToken',userData?.tokens?.accessToken,{maxAge:30000,httpOnly:true,secure:true,sameSite:'none'})
+        return res.status(203).json(userData)
 
 
     }catch (e) {
