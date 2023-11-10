@@ -15,7 +15,9 @@ export const authMiddleware = (req: CustomRequest, res: Response, next: NextFunc
     } else {
 
         try {
-            const token = req.headers.authorization?.split(' ')[1]
+
+            const token = req.cookies['accessToken']
+
             if (!token) {
                 return res.status(401).json({error: "user is not authorized"});
             }
