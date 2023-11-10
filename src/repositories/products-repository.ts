@@ -9,28 +9,28 @@ const mongoUri = "mongodb+srv://vercel-admin-user:paradoxkulesh@test.mi4rsi6.mon
 
 
 
-const client = new MongoClient(mongoUri)
+const client = new MongoClient(mongoUri).db('productsDB').collection('products')
 
 export const productRepository = {
     findProduct(searchTerm: string | null) {
         return products
     },
     async getProducts() {
-        let res = await client.db('productsDB').collection('products').find({}).toArray()
-        return res
+        let res = await client.find({}).toArray()
+        return {res}
 
     },
     async createProducts(title: string, price: number) {
         let id = v4()
-        let res = await client.db('productsDB').collection('products').insertOne({title, price, id})
+        let res = await client.insertOne({title, price, id})
         return res
     },
     async updateProduct(id: string, title: string) {
-        let res = await client.db('productsDB').collection('products').updateOne({id:id}, {$set:{title:title}})
+        let res = await client.updateOne({id:id}, {$set:{title:title}})
         return res
     },
     async deleteProduct(id:string){
-        let res = await client.db('productsDB').collection('products').deleteOne({id:id})
+        let res = await client.deleteOne({id:id})
         return res
     }
 }

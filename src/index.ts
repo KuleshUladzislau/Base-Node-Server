@@ -2,6 +2,7 @@ import express,{Request,Response} from 'express'
 import {run} from "./repositories/db";
 import {productRouter} from "./routes/product-router";
 import {authRouter} from "./routes/auth-router";
+import cookieParser from 'cookie-parser'
 import cors from 'cors';
 
 
@@ -10,6 +11,7 @@ const app = express();
 const PORT = process.env.PORT || 9000;
 
 app.use(cors());
+app.use(cookieParser())
 
 app.use(express.json());
 

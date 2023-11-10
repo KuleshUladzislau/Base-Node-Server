@@ -1,6 +1,7 @@
 import {Request, Response, NextFunction} from "express";
 import jwt from 'jsonwebtoken'
 import {config} from '../config'
+import {tokenService} from "../services/token-service";
 
 
 interface CustomRequest extends Request {
@@ -18,8 +19,11 @@ export const authMiddleware = (req: CustomRequest, res: Response, next: NextFunc
             if (!token) {
                 return res.status(401).json({error: "user is not authorized"});
             }
-            const decodedData = jwt.verify(token,config.secret)
-            req.user = decodedData
+            const userData = tokenService.validateAccessToken(token)
+            if(!userData){
+                return res.status(401).json({error: "user is not authorized"});
+            }
+            req.user = userData
             next()
 
         } catch (e) {

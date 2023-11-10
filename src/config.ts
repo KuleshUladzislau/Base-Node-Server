@@ -3,5 +3,6 @@
 
 
 export const config = {
-    secret:'SECRET_KEY_RANDOM'
+    accessToken:'ACCESS_JWT_TOKEN',
+    refreshToken:'REFRESH_JWT_TOKEN'
 }
