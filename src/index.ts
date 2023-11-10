@@ -10,7 +10,13 @@ import cors from 'cors';
 const app = express();
 const PORT = process.env.PORT || 9000;
 
-app.use(cors());
+app.use(cors({
+    origin:'http://localhost:3001',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials:true
+
+}));
 app.use(cookieParser())
 
 app.use(express.json());

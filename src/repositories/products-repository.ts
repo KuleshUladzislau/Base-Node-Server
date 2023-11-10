@@ -17,7 +17,7 @@ export const productRepository = {
     },
     async getProducts() {
         let res = await client.find({}).toArray()
-        return {res}
+        return res
 
     },
     async createProducts(title: string, price: number) {
