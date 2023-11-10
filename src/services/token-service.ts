@@ -22,7 +22,7 @@ export const tokenService = {
 
     generateTokens(id: ObjectId, roles: string | string[]) {
         const payload: PayloadType = {id, roles}
-        const accessToken = jwt.sign(payload, config.accessToken, {expiresIn: '30s'})
+        const accessToken = jwt.sign(payload, config.accessToken, {expiresIn: '15m'})
         const refreshToken = jwt.sign(payload, config.refreshToken, {expiresIn: '15d'})
         return {accessToken, refreshToken}
     },
