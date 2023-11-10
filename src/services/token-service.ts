@@ -41,7 +41,7 @@ export const tokenService = {
         return token;
     },
     async removeToken(refreshToken: string) {
-        const tokenData = await TokenClient.deleteOne({refreshToken})
+         await TokenClient.deleteOne({refreshToken})
         return {message:'okay'}
     },
     validateAccessToken(token:string){
