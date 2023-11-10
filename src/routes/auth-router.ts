@@ -50,8 +50,8 @@ authRouter.post('/login', async (req: Request, res: Response) => {
 
 
         if(checkUserInDB.status === 200) {
-            res.cookie('refreshToken',checkUserInDB?.token?.refreshToken,{maxAge:30*24*60*60*1000,httpOnly:true,secure:true})
-            res.cookie('accessToken',checkUserInDB?.token?.accessToken,{maxAge:30000,httpOnly:true,secure:true})
+            res.cookie('refreshToken',checkUserInDB?.token?.refreshToken,{maxAge:30*24*60*60*1000,httpOnly:true,secure:true,sameSite:'none'})
+            res.cookie('accessToken',checkUserInDB?.token?.accessToken,{maxAge:30000,httpOnly:true,secure:true,sameSite:'none'})
 
             return res.status(200).json(checkUserInDB)
         }
@@ -80,7 +80,7 @@ authRouter.get('/refresh', async (req: Request, res: Response) => {
     try{
         const {refreshToken} = req.cookies
         const userData = await authRepository.refreshToken(refreshToken)
-        res.cookie('refreshToken',userData?.tokens?.refreshToken,{maxAge:30*24*60&60*1000,httpOnly:true})
+        res.cookie('refreshToken',userData?.tokens?.refreshToken,{maxAge:30*24*60*60*1000,httpOnly:true})
         return res.json(userData)
 
 
