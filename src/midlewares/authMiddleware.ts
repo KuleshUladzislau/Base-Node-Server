@@ -26,6 +26,7 @@ export const authMiddleware = (req: CustomRequest, res: Response, next: NextFunc
                 return res.status(401).json({error: "user is not authorized"});
             }
             req.user = userData
+
             next()
 
         } catch (e) {
