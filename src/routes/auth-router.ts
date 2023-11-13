@@ -67,6 +67,7 @@ authRouter.post('/logout', async (req: Request, res: Response) => {
     try {
         const {refreshToken} = req.cookies
         const token = await authRepository.logout(refreshToken)
+        res.clearCookie('accessToken')
         res.clearCookie('refreshToken')
         return res.status(200).json(token)
     } catch (e) {

@@ -42,8 +42,9 @@ startApp()
 
 
 
-
-app.use('/products',productRouter)
 app.use('/auth',authRouter)
+app.use('/products',productRouter)
+app.use('/products',productRouter)
+
 
 
