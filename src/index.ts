@@ -49,7 +49,7 @@ startApp()
 app.use('/auth',authRouter)
 app.use('/products',productRouter)
 
-app.use('/images', express.static(path.join('images')));
+app.use('/images', express.static(path.join('src', 'images')));
 
 
 

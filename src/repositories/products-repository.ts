@@ -22,7 +22,7 @@ export const productRepository = {
     },
     async createProducts(title: string, price: number,img:string | undefined,userId:ObjectId) {
         let id = v4()
-        let res = await client.insertOne({title, price, userId,img:`https://base-node-server.vercel.app/${img}`})
+        let res = await client.insertOne({title, price, userId,img:`http://localhost:9000/${img}`})
         return res
     },
     async updateProduct(id: string, title: string) {
