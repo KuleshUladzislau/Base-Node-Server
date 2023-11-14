@@ -23,13 +23,19 @@ productRouter.get('/',[
 
 productRouter.post('/',upload.single('image'),async (req: Request & { file?: Express.Multer.File } ,res:Response)=>{
 
-    let {title,price} =  req.body
+    let {title,price,comments} =  req.body
     let patch = req.file?.path.slice(4)
 
 
 
 
-    const createdProduct = await  productRepository.createProducts(title,price,patch,new ObjectId('65532421967ea34dfaa08367'))
+    const createdProduct = await  productRepository.createProducts(
+        title,
+        price,
+        patch,
+        new ObjectId('65532421967ea34dfaa08367'),
+        comments
+    )
 
     if(createdProduct){
         res.send(createdProduct)
@@ -72,6 +78,4 @@ productRouter.delete('/',[
 
 })
 
-productRouter.post('/image',upload.single('avatar'),async (req:Request,res:Response)=>{
 
-})
