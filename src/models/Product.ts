@@ -2,7 +2,8 @@ import { Schema, model, Document } from 'mongoose';
 
 const CommentSchema = new Schema({
     userId: { type: String, required: true },
-    message: { type: String, required: true }
+    message: { type: String, required: true },
+    userName:{type:String,required:true,unique: true}
 });
 
 const ProductSchema = new Schema({
