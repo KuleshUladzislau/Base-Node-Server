@@ -84,6 +84,9 @@ export const authRepository = {
             return {user,tokens}
         }
     },
+    async me(){
+
+    }
 
 }
 

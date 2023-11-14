@@ -8,10 +8,7 @@ import {tokenService} from "../services/token-service";
 export const authRouter = Router({})
 
 
-// authRouter.get('/me', async (req: Request, res: Response) => {
-//     await authRepository.me()
-//     res.send('server work')
-// })
+
 authRouter.post('/registration',
     [
         check('email', 'invalid email').isEmail(),
@@ -88,6 +85,18 @@ authRouter.get('/refresh', async (req: Request, res: Response) => {
 
     }catch (e) {
         return res.status(401).json({message:"Unauthorized user"})
+    }
+
+})
+
+authRouter.get('/me', async (req: Request, res: Response) => {
+
+    try{
+
+
+
+    }catch (e) {
+
     }
 
 })

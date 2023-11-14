@@ -2,7 +2,8 @@ import {Router} from "express";
 import {Response,Request} from "express";
  import {productRepository} from "../repositories/products-repository";
 import {authMiddleware} from "../midlewares/authMiddleware";
-
+import {upload} from '../midlewares/upload'
+import {ObjectId} from "mongodb";
 
 export const productRouter = Router({})
 
@@ -20,11 +21,15 @@ productRouter.get('/',[
     }
 })
 
-productRouter.post('/',async (req:Request,res:Response)=>{
+productRouter.post('/',upload.single('image'),async (req: Request & { file?: Express.Multer.File } ,res:Response)=>{
 
     let {title,price} =  req.body
+    let patch = req.file?.path.slice(4)
 
-    const createdProduct = await  productRepository.createProducts(title,price)
+
+
+
+    const createdProduct = await  productRepository.createProducts(title,price,patch,new ObjectId('65532421967ea34dfaa08367'))
 
     if(createdProduct){
         res.send(createdProduct)
@@ -50,7 +55,9 @@ productRouter.put('/',async (req:Request,res:Response)=>{
 
 })
 
-productRouter.delete('/',async (req:Request,res:Response)=>{
+productRouter.delete('/',[
+    authMiddleware
+],async (req:Request,res:Response)=>{
 
     let {id} =  req.body
 
@@ -62,5 +69,9 @@ productRouter.delete('/',async (req:Request,res:Response)=>{
     }else {
         res.status(404)
     }
+
+})
+
+productRouter.post('/image',upload.single('avatar'),async (req:Request,res:Response)=>{
 
 })

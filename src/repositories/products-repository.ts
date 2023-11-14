@@ -1,4 +1,4 @@
-import {MongoClient} from "mongodb";
+import {MongoClient, ObjectId} from "mongodb";
 import {v4} from 'uuid'
 
 const products = [{id: 1, title: 'tomato'}, {id: 2, title: 'cucumber'},]
@@ -20,9 +20,9 @@ export const productRepository = {
         return res
 
     },
-    async createProducts(title: string, price: number) {
+    async createProducts(title: string, price: number,img:string | undefined,userId:ObjectId) {
         let id = v4()
-        let res = await client.insertOne({title, price, id})
+        let res = await client.insertOne({title, price, userId,img:`https://base-node-server.vercel.app/${img}`})
         return res
     },
     async updateProduct(id: string, title: string) {

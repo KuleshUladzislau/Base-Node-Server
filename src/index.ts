@@ -4,6 +4,9 @@ import {productRouter} from "./routes/product-router";
 import {authRouter} from "./routes/auth-router";
 import cookieParser from 'cookie-parser'
 import cors from 'cors';
+import path from "path";
+
+
 
 
 
@@ -20,6 +23,7 @@ app.use(cors({
 app.use(cookieParser())
 
 app.use(express.json());
+
 
 
 
@@ -44,7 +48,8 @@ startApp()
 
 app.use('/auth',authRouter)
 app.use('/products',productRouter)
-app.use('/products',productRouter)
+
+app.use('/images', express.static(path.join('src', 'images')));
 
 
 
