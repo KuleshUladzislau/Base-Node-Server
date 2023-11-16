@@ -9,10 +9,7 @@ interface CustomRequest extends Request {
 }
 
 export const authMiddleware = (req: CustomRequest, res: Response, next: NextFunction) => {
-    if (req.method === 'OPTIONS') {
 
-        next();
-    } else {
 
         try {
 
@@ -33,5 +30,5 @@ export const authMiddleware = (req: CustomRequest, res: Response, next: NextFunc
             console.log(e);
             return res.status(401).json({error: "user is not authorized"});
         }
-    }
+
 };

@@ -78,4 +78,37 @@ productRouter.delete('/',[
 
 })
 
+productRouter.put('/comments',[
+    authMiddleware
+],async (req:Request,res:Response)=>{
+
+    let {productId,message,userId,userName} =  req.body
+
+    let deletedProduct  = await productRepository.addComment(productId,message,userId,userName)
+
+    if(deletedProduct){
+        res.status(201).send({message:"comments created"})
+    }else {
+        res.status(404)
+    }
+
+})
+
+
+productRouter.delete('/comments',[
+    authMiddleware
+],async (req:Request,res:Response)=>{
+
+    let {productId,commentId} =  req.body
+
+    let deletedProduct  = await productRepository.deleteComment(productId,commentId)
+
+    if(deletedProduct){
+        res.status(201).send({message:"comments deleted"})
+    }else {
+        res.status(404)
+    }
+
+})
+
 

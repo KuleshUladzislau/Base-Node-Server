@@ -3,10 +3,10 @@ import {Response, Request} from "express";
 import {authRepository} from "../repositories/auth-respository";
 import {check, validationResult} from 'express-validator';
 import {tokenService} from "../services/token-service";
+import {authMiddleware} from "../midlewares/authMiddleware";
 
 
 export const authRouter = Router({})
-
 
 
 authRouter.post('/registration',
@@ -24,14 +24,22 @@ authRouter.post('/registration',
 
             const registrationInfo = await authRepository.registration(email, password)
 
-            res.cookie('refreshToken',registrationInfo.token.refreshToken,{maxAge:30*24*60&60*1000,httpOnly:true})
+            if (registrationInfo.user) {
+                res.cookie('refreshToken', registrationInfo.token.refreshToken, {
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: 'none'
+                });
+                return res.status(200).json(registrationInfo);
+            } else {
+                return res.status(400).json({ message: 'A user with this email already exists' });
+            }
 
-            if (!registrationInfo) return res.status(400).json({message: 'A user with this name exists'})
 
 
             if (registrationInfo) return res.status(200).json(registrationInfo)
         } catch (e) {
-            res.status(400).json({message: 'Registration error'})
+            res.status(500).json({message: 'Registration error'})
         }
 
     })
@@ -39,16 +47,24 @@ authRouter.post('/login', async (req: Request, res: Response) => {
 
     try {
         const {email, password} = req.body
-        const checkUserInDB = await authRepository.login(email,password)
+        const checkUserInDB = await authRepository.login(email, password)
 
-        if(!checkUserInDB) return res.status(400).json({message:'User not found'})
+        if (!checkUserInDB) return res.status(400).json({message: 'User not found'})
 
-        if(checkUserInDB.status === 400) return res.status(400).json(checkUserInDB.message)
+        if (checkUserInDB.status === 400) return res.status(400).json({message: checkUserInDB.message})
 
 
-        if(checkUserInDB.status === 200) {
-            res.cookie('refreshToken',checkUserInDB?.token?.refreshToken,{httpOnly:true,secure:true,sameSite:'none'})
-            res.cookie('accessToken',checkUserInDB?.token?.accessToken,{httpOnly:true,secure:true,sameSite:'none'})
+        if (checkUserInDB.status === 200) {
+            res.cookie('refreshToken', checkUserInDB?.token?.refreshToken, {
+                httpOnly: true,
+                secure: true,
+                sameSite: 'none'
+            })
+            res.cookie('accessToken', checkUserInDB?.token?.accessToken, {
+                httpOnly: true,
+                secure: true,
+                sameSite: 'none'
+            })
 
             return res.status(200).json(checkUserInDB)
         }
@@ -75,28 +91,38 @@ authRouter.post('/logout', async (req: Request, res: Response) => {
 
 authRouter.get('/refresh', async (req: Request, res: Response) => {
 
-    try{
+    try {
         const {refreshToken} = req.cookies
         const userData = await authRepository.refreshToken(refreshToken)
-        res.cookie('refreshToken',userData?.tokens?.refreshToken,{maxAge:30*24*60*60*1000,httpOnly:true,secure:true,sameSite:'none'})
-        res.cookie('accessToken',userData?.tokens?.accessToken,{maxAge:30000,httpOnly:true,secure:true,sameSite:'none'})
+        res.cookie('refreshToken', userData?.tokens?.refreshToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none'
+        })
+        res.cookie('accessToken', userData?.tokens?.accessToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none'
+        })
         return res.status(203).json(userData)
 
 
-    }catch (e) {
-        return res.status(401).json({message:"Unauthorized user"})
+    } catch (e) {
+        return res.status(401).json({message: "Unauthorized user"})
     }
 
 })
 
 authRouter.get('/me', async (req: Request, res: Response) => {
 
-    try{
+    try {
+        const {refreshToken} = req.cookies
+        const userData = await authRepository.me(refreshToken)
 
-
-
-    }catch (e) {
-
+        if (userData) return res.status(200).json(userData)
+        if (!userData) return res.status(401).send('unauthorized user')
+    } catch (e) {
+        console.log(e)
     }
 
 })

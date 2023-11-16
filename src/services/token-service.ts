@@ -17,6 +17,7 @@ const mongoUri = "mongodb+srv://vercel-admin-user:paradoxkulesh@test.mi4rsi6.mon
 
 
 const TokenClient = new MongoClient(mongoUri).db('productsDB').collection('Token')
+const UserClient = new MongoClient(mongoUri).db('productsDB').collection('roles')
 
 export const tokenService = {
 
@@ -65,10 +66,11 @@ export const tokenService = {
 
             const tokenData = await TokenClient.findOne({refreshToken})
 
-            return tokenData?.refreshToken
+            return tokenData
         }catch (e) {
             return null
         }
     },
+
 
 }

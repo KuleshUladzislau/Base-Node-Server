@@ -43,5 +43,27 @@ export const productRepository = {
     async deleteProduct(id:string){
         let res = await client.deleteOne({id:id})
         return res
+    },
+    async addComment(productId:ObjectId,message:string,userId:string,userName:string){
+        const comment = {
+            message,
+            userId,
+            userName
+        };
+
+         await client.updateOne(
+            { _id: new ObjectId(productId) },
+            { $push: { comments: comment } }
+        );
+
+        return true
+    },
+    async deleteComment(productId:ObjectId,commentId:ObjectId){
+            let res = await client.updateOne({
+                _id:new ObjectId(productId)
+            },{
+                $pull:{comments:{_id:new ObjectId(commentId)}}
+            })
+            return {}
     }
 }
